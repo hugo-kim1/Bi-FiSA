@@ -5,11 +5,11 @@ import "./Node.sol";
 import "./Round.sol";
 
 contract Key is Node, Round{
-    mapping (bytes32 => uint8) internal keyCount;
-    bytes32[] internal possibleKeys;
-    bytes32 internal key;
-    bool internal isKeySet;
-    uint8 internal voteResetCount;
+    mapping (bytes32 => uint8) public keyCount;
+    bytes32[] public possibleKeys;
+    bytes32 public key;
+    bool public isKeySet;
+    uint8 public voteResetCount;
 
     event keySet();
     event fatalKeyError();
