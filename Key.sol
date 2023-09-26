@@ -64,7 +64,7 @@ contract Key is Node, Round{
                 break;
             }
             else{
-                resetKey();
+                this.resetKey();
             }
         }
         emit fatalKeyError();
@@ -79,13 +79,14 @@ contract Key is Node, Round{
         emit resetVoted();
 
         if (voteResetCount >= threshold){
-            resetKey();
+            this.resetKey();
         }
     }
 
     // A function that can only be called by this contract.
     // Resets the public key.
-    function resetKey() internal {
+    function resetKey() external {
+        require(msg.sender == address(this));
 
         delete key;
         for (uint8 i =0; i < uint8(nodeList.length); i++) {
