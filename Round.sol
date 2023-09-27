@@ -6,7 +6,7 @@ import "./Node.sol";
 abstract contract Round is Node{
     uint public roundCount;
 
-    address internal exchange;
+    address public exchange;
     modifier onlyExchange{
         require(msg.sender == exchange, "Only the exchange can access.");
         _;
@@ -17,7 +17,7 @@ abstract contract Round is Node{
         bool isUser;
         bool ack;
     }
-    mapping (address => userInfo) internal userMap;
+    mapping (address => userInfo) public userMap;
     modifier onlyUser{
         require(userMap[msg.sender].isUser == true);
         _;
@@ -33,10 +33,16 @@ abstract contract Round is Node{
     event userSnapPublished(uint, address);
     event exchangeSnapPublished(uint, address);
 
-    uint8 internal roundVotes;
-    mapping (address => bool) internal roundVoted;
+    uint8 public roundVotes;
+    mapping (address => bool) public roundVoted;
     event votedRound(string);
     event nextRoundBegins(string);
+
+    uint public calcReservesUser;
+    uint public calcReservesExch;
+    uint public actReserves;
+
+
 
     constructor (){
         exchange = msg.sender;
@@ -84,6 +90,22 @@ abstract contract Round is Node{
         }
     }
 
+    // Node publishes user-snapshot-based calculated reserves
+    function calculatedReservesUser(uint reserves) onlyNode external{
+        calcReservesUser = reserves;
+    }
+
+    // Node publishes exchange-snapshot-based calculated reserves
+    function calculatedReservesExchange(uint reserves) onlyNode external{
+        calcReservesExch = reserves;
+    }
+
+    // Node publishes actual reserves
+    function actualReserves(uint reserves) onlyNode external{
+        actReserves = reserves;
+    }
+
+
     // Nodes vote to start the next round.
     function voteNextRound() onlyNode external {
         require (!roundVoted[msg.sender]);
@@ -103,6 +125,9 @@ abstract contract Round is Node{
         for (uint256 i=0; i < userAddressArr.length; i++){
             delete userMap[userAddressArr[i]].ack;
         }
+        delete calcReservesUser;
+        delete calcReservesExch;
+        delete actReserves;
         roundCount++;
     }
 }
