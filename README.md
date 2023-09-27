@@ -1,7 +1,7 @@
 # Bi-FiSA
 ## Contents
 This repo contains the proof of reserves (PoR) smart contract codes for Bi-FiSA (submitted to Usenix Security 24').
-The repo for the experiment of EDH and UDH protocol for the pause period can be found at : <https://github.com/m0nd2y/Proof-Of-Reserves>
+The repo for the experiment of EDH and UDH protocol for the pause period of Bi-FiSA can be found at : <https://github.com/m0nd2y/Proof-Of-Reserves>
 
 ### Node.sol
 This is where the management of the list of registered nodes is carried out.
